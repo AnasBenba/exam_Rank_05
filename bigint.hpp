@@ -23,6 +23,9 @@ class bigint {
         bool operator<=(const bigint &other);
         bool operator>(const bigint &other);
         bool operator>=(const bigint &other);
+        // addition
+        bigint operator+(const bigint &other);
+        bigint &operator+=(const bigint &other);
 };
 
 std::ostream &operator<<(std::ostream &os, const bigint &obj);

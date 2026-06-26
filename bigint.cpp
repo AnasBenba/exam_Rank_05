@@ -103,3 +103,16 @@ bool bigint::operator>=(const bigint &other){
         return true;
     return false;
 }
+
+bigint bigint::operator+(const bigint &other){
+    unsigned int n1 = toNum(this->num);
+    unsigned int n2 = toNum(other.num);
+    unsigned int r = n1 + n2;
+    bigint result(r);
+    return result;
+}
+
+bigint &bigint::operator+=(const bigint &other){
+    bigint result = this->operator+(other);
+    return (this->operator=(result));
+}
