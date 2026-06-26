@@ -1,16 +1,28 @@
 #pragma once
 #include <string>
 #include <algorithm>
+#include <iostream>
+#include <sstream>
 
-class Bigint {
+class bigint {
     private:
         std::string num;
     public:
-        Bigint(std::string num);
-        Bigint(unsigned int n);
-        ~Bigint();
-        Bigint &operator=(const Bigint &other);
-        Bigint(const Bigint &other);
+        bigint(std::string num);
+        bigint(unsigned int n);
+        ~bigint();
+        bigint &operator=(const bigint &other);
+        bigint(const bigint &other);
         void clear_data();
         const std::string getNum() const;
+
+        // comparisons
+        bool operator==(const bigint &other);
+        bool operator!=(const bigint &other);
+        bool operator<(const bigint &other);
+        bool operator<=(const bigint &other);
+        bool operator>(const bigint &other);
+        bool operator>=(const bigint &other);
 };
+
+std::ostream &operator<<(std::ostream &os, const bigint &obj);
