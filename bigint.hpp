@@ -17,15 +17,19 @@ class bigint {
         const std::string getNum() const;
 
         // comparisons
-        bool operator==(const bigint &other);
-        bool operator!=(const bigint &other);
-        bool operator<(const bigint &other);
-        bool operator<=(const bigint &other);
-        bool operator>(const bigint &other);
-        bool operator>=(const bigint &other);
+        bool operator==(const bigint &other) const;
+        bool operator!=(const bigint &other) const;
+        bool operator<(const bigint &other) const;
+        bool operator<=(const bigint &other) const;
+        bool operator>(const bigint &other) const;
+        bool operator>=(const bigint &other) const;
         // addition
-        bigint operator+(const bigint &other);
+        bigint operator+(const bigint &other) const;
         bigint &operator+=(const bigint &other);
+        bigint operator<<(int num) const;
+        bigint &operator<<=(int num);
+        bigint operator>>(int num) const;
+        bigint &operator>>=(int num);
 };
 
 std::ostream &operator<<(std::ostream &os, const bigint &obj);

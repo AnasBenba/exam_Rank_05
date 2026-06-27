@@ -51,65 +51,126 @@ std::ostream &operator<<(std::ostream &os, const bigint &obj){
     return os;
 }
 
-bool bigint::operator==(const bigint &other){
+bool bigint::operator==(const bigint &other) const{
     if (this->num.compare(other.num) == 0)
         return true;
     return false;
 }
 
-bool bigint::operator!=(const bigint &other){
+bool bigint::operator!=(const bigint &other) const{
     if (this->num.compare(other.num) != 0)
         return true;
     return false;
 }
 
-unsigned int  toNum (std::string num){
-    std::string t = num;
-    std::reverse(t.begin(), t.end());
-    unsigned int n;
-    std::stringstream ss(t);
-    ss >> n;
-    return n;
-}
-
-bool bigint::operator<(const bigint &other){
-    unsigned int n1 = toNum(this->num);
-    unsigned int n2 = toNum(other.num);
-    if (n1 < n2)
+bool bigint::operator<(const bigint &other) const{
+    if (this->num.length() < other.num.length())
         return true;
+    if (this->num.length() > other.num.length())
+        return false;
+    for (int i = this->num.length() - 1; i >= 0; i--){
+        if (this->num[i] < other.num[i])
+            return true;
+        if (this->num[i] > other.num[i])
+            return false;
+    }
     return false;
 }
 
-bool bigint::operator<=(const bigint &other){
-    unsigned int n1 = toNum(this->num);
-    unsigned int n2 = toNum(other.num);
-    if (n1 <= n2)
+bool bigint::operator<=(const bigint &other) const{
+    if (this->num.length() < other.num.length())
         return true;
+    if (this->num.length() > other.num.length())
+        return false;
+    for (int i = this->num.length() - 1; i >= 0; i--){
+        if (this->num[i] < other.num[i])
+            return true;
+        if (this->num[i] > other.num[i])
+            return false;
+    }
+    return true;
+}
+
+bool bigint::operator>(const bigint &other) const{
+    if (this->num.length() > other.num.length())
+        return true;
+    if (this->num.length() < other.num.length())
+        return false;
+    for (int i = this->num.length() - 1; i >= 0; i--){
+        if (this->num[i] > other.num[i])
+            return true;
+        if (this->num[i] < other.num[i])
+            return false;
+    }
     return false;
 }
 
-bool bigint::operator>(const bigint &other){
-    unsigned int n1 = toNum(this->num);
-    unsigned int n2 = toNum(other.num);
-    if (n1 > n2)
+bool bigint::operator>=(const bigint &other) const{
+    if (this->num.length() > other.num.length())
         return true;
-    return false;
+    if (this->num.length() < other.num.length())
+        return false;
+    for (int i = this->num.length() - 1; i >= 0; i--){
+        if (this->num[i] > other.num[i])
+            return true;
+        if (this->num[i] < other.num[i]){
+            return false;
+        }
+    }
+    return true;
 }
 
-bool bigint::operator>=(const bigint &other){
-    unsigned int n1 = toNum(this->num);
-    unsigned int n2 = toNum(other.num);
-    if (n1 >= n2)
-        return true;
-    return false;
+bigint bigint::operator+(const bigint &other) const{
+    std::string res = "";
+    int carry = 0;
+    size_t n1 = this->num.length();
+    size_t n2 = other.num.length();
+    size_t i = 0;
+    while (i < n1 || i < n2 || carry)
+    {
+        int sum = carry + ((i < n1) ? (this->num[i] - '0') : 0) + ((i < n2) ? (other.num[i] - '0') : 0);
+        carry = sum / 10;
+        res.push_back((sum % 10) + '0');
+        i++;
+    }
+    std::reverse(res.begin(), res.end());
+    return bigint(res);
 }
 
-bigint bigint::operator+(const bigint &other){
-    unsigned int n1 = toNum(this->num);
-    unsigned int n2 = toNum(other.num);
-    unsigned int r = n1 + n2;
-    bigint result(r);
-    return result;
+bigint &bigint::operator<<=(int num){
+    if (this->num == "0")
+        return *this;
+    if (num <= 0)
+        return *this;
+    this->num.insert(0, num, '0');
+    return *this;
+}
+
+bigint bigint::operator<<(int num) const{
+    bigint temp = bigint(this->num);
+    std::reverse(temp.num.begin(), temp.num.end());
+    temp <<= num;
+    return temp;
+}
+
+bigint &bigint::operator>>=(int num){
+    if (this->num == "0")
+        return *this;
+    if (num <= 0)
+        return *this;
+    if (static_cast<size_t>(num) >= this->num.length()){
+        this->num = "0";
+        return *this;
+    }
+    this->num.erase(0, num);
+    return *this;
+}
+
+bigint bigint::operator>>(int num) const{
+    bigint temp = bigint(this->num);
+    std::reverse(temp.num.begin(), temp.num.end());
+    temp >>= num;
+    return temp;
 }
 
 bigint &bigint::operator+=(const bigint &other){

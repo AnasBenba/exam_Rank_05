@@ -53,6 +53,47 @@ int main(){
     p3 += p4 += p5; // p4 = 20+30=50; p3 = 10+50=60
     std::cout << "Test 18 chain (p3 += (p4 += p5)) : p3=" << p3 << " p4=" << p4 << " p5=" << p5
               << " | expected: p3=60 p4=50 p5=30\n";
+    
+    std::cout << "\n===== DIGIT SHIFTS (<<, >>) =====\n";
+    bigint sh1("42");
+    std::cout << "Test 19 (\"42\" << 3)       : " << (sh1 << 3) << " | expected: 42000\n";
+    std::cout << "Test 20 (\"42\" << 0)       : " << (sh1 << 0) << " | expected: 42\n";
 
+    bigint sh2("1337");
+    std::cout << "Test 21 (\"1337\" >> 2)     : " << (sh2 >> 2) << " | expected: 13\n";
+    std::cout << "Test 22 (\"1337\" >> 0)     : " << (sh2 >> 0) << " | expected: 1337\n";
+    std::cout << "Test 23 (\"1337\" >> 5)     : " << (sh2 >> 5) << " | expected: 0\n";
+
+    std::cout << "\n===== COMPOUND SHIFTS (<<=, >>=) =====\n";
+    bigint sc1("500");
+    sc1 <<= 4;
+    std::cout << "Test 24 sc1 <<= 4 (\"500\") : " << sc1 << " | expected: 5000000\n";
+
+    bigint sc2("12345");
+    sc2 >>= 2;
+    std::cout << "Test 25 sc2 >>= 2 (\"12345\"): " << sc2 << " | expected: 123\n";
+
+    // Parentheses for chaining because assignment operators are right-associative
+    bigint sc3("5");
+    (sc3 <<= 2) <<= 2; // 5 -> 500 -> 50000
+    std::cout << "Test 26 chain (sc3 <<= 2 <<= 2): " << sc3 << " | expected: 50000\n";
+
+    bigint sc4("987654");
+    (sc4 >>= 2) >>= 2; // 987654 -> 9876 -> 98
+    std::cout << "Test 27 chain (sc4 >>= 2 >>= 2): " << sc4 << " | expected: 98\n";
+
+    // Mixed chain
+    bigint sc5("12345");
+    (sc5 <<= 3) >>= 4; // 12345 -> 12345000 -> 1234
+    std::cout << "Test 28 chain (sc5 <<= 3 >>= 4): " << sc5 << " | expected: 1234\n";
+
+    std::cout << "\n===== MIXED OPERATIONS =====\n";
+    bigint mix1 = (bigint("12") << 2) + bigint("34");   // 1200 + 34 = 1234
+    std::cout << "Test 29 ((\"12\" << 2) + \"34\"): " << mix1 << " | expected: 1234\n";
+
+    bigint mix2 = (bigint("99999") >> 3) + (bigint("1") << 4); // 99 + 10000 = 10099
+    std::cout << "Test 30 ((\"99999\" >> 3) + (\"1\" << 4)): " << mix2 << " | expected: 10099\n";
+
+    std::cout << "\n[END] Review outputs visually against expected values above.\n";
     return 0;
 }
