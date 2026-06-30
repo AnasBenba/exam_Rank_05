@@ -158,8 +158,7 @@ bigint &bigint::operator<<=(int num){
 }
 
 bigint bigint::operator<<(int num) const{
-    bigint temp = bigint(this->num);
-    std::reverse(temp.num.begin(), temp.num.end());
+    bigint temp = *this;
     temp <<= num;
     return temp;
 }
@@ -178,8 +177,7 @@ bigint &bigint::operator>>=(int num){
 }
 
 bigint bigint::operator>>(int num) const{
-    bigint temp = bigint(this->num);
-    std::reverse(temp.num.begin(), temp.num.end());
+    bigint temp = *this;
     temp >>= num;
     return temp;
 }
