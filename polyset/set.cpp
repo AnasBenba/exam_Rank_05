@@ -24,7 +24,20 @@ bool set::has(int x) const{
 }
 
 void set::insert(int x){
-    for (int i = 0; i < this->)
+    if (this->bag_ == NULL)
+        return;
+    if (this->bag_->has(x))
+        return;
+    this->bag_->insert(x);
+}
+
+void set::insert(int *arr, int n){
+    if (this->bag_ == NULL)
+        return;
+    for (int i = 0; i < n; i++){
+        if (!this->bag_->has(arr[i]))
+            this->bag_->insert(arr[i]);
+    }
 }
 
 void set::clear(){
