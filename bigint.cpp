@@ -8,8 +8,18 @@ void bigint::clear_data(){
         this->num.erase(0, first_non_zero);
 }
 
+std::string trim(std::string num){
+    std::string r = "0";
+    size_t start = num.find_first_not_of(" \t\r\n\v");
+    size_t end = num.find_last_not_of(" \t\r\n\v");
+    if (start > end || start == std::string::npos)
+        return r;
+    return (num.substr(start, end - start + 1));
+}
+
 bigint::bigint(std::string num){
-    this->num = num;
+    std::string n = trim(num);
+    this->num = n;
     this->clear_data();
     std::reverse(this->num.begin(), this->num.end());
 }
@@ -120,7 +130,7 @@ bool bigint::operator>=(const bigint &other) const{
     return true;
 }
 
-bigint bigint::operator+(const bigint &other) const{
+bigint &bigint::operator+(const bigint &other){
     std::string res = "";
     int carry = 0;
     size_t n1 = this->num.length();
@@ -133,8 +143,8 @@ bigint bigint::operator+(const bigint &other) const{
         res.push_back((sum % 10) + '0');
         i++;
     }
-    std::reverse(res.begin(), res.end());
-    return bigint(res);
+    this->num = res;
+    return *this;
 }
 
 bigint &bigint::operator<<=(int num){
@@ -176,4 +186,38 @@ bigint bigint::operator>>(int num) const{
 bigint &bigint::operator+=(const bigint &other){
     bigint result = this->operator+(other);
     return (this->operator=(result));
+}
+
+bigint &bigint::operator++(){
+    bigint obj(1);
+    this->operator+(obj);
+    return *this;
+}
+
+bigint bigint::operator++(int){
+    bigint temp = *this;
+    this->operator++();
+    return temp;
+}
+
+bigint &bigint::operator--(){
+    if (this->num == "0")
+        return *this;
+    for (int i = 0; this->num[i]; i++){
+        if (this->num[i] != '0'){
+            this->num[i] -= 1;
+            break;
+        }
+        this->num[i] = '9';
+    }
+    std::reverse(this->num.begin(), this->num.end());
+    this->clear_data();
+    std::reverse(this->num.begin(), this->num.end());
+    return *this;
+}
+
+bigint bigint::operator--(int){
+    bigint temp = *this;
+    this->operator--();
+    return temp;
 }
