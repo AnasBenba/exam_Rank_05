@@ -1,6 +1,6 @@
 #pragma once
 
-#include "polyset-attachment/searchable_bag.hpp"
+#include "searchable_bag.hpp"
 
 class set{
     private:

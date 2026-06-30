@@ -1,7 +1,7 @@
 #pragma once
 
-#include "polyset-attachment/array_bag.hpp"
-#include "polyset-attachment/searchable_bag.hpp"
+#include "array_bag.hpp"
+#include "searchable_bag.hpp"
 
 class searchable_array_bag: public array_bag, public searchable_bag{
     public:
