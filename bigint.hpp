@@ -24,7 +24,7 @@ class bigint {
         bool operator>(const bigint &other) const;
         bool operator>=(const bigint &other) const;
         // addition
-        bigint &operator+(const bigint &other);
+        bigint operator+(const bigint &other) const;
         bigint &operator+=(const bigint &other);
         bigint operator<<(int num) const;
         bigint &operator<<=(int num);

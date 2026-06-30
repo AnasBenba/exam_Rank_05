@@ -130,7 +130,7 @@ bool bigint::operator>=(const bigint &other) const{
     return true;
 }
 
-bigint &bigint::operator+(const bigint &other){
+bigint bigint::operator+(const bigint &other) const{
     std::string res = "";
     int carry = 0;
     size_t n1 = this->num.length();
@@ -143,8 +143,9 @@ bigint &bigint::operator+(const bigint &other){
         res.push_back((sum % 10) + '0');
         i++;
     }
-    this->num = res;
-    return *this;
+    std::reverse(res.begin(), res.end());
+    bigint r = res;
+    return r;
 }
 
 bigint &bigint::operator<<=(int num){
@@ -190,7 +191,7 @@ bigint &bigint::operator+=(const bigint &other){
 
 bigint &bigint::operator++(){
     bigint obj(1);
-    this->operator+(obj);
+    this->operator+=(obj);
     return *this;
 }
 
