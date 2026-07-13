@@ -13,5 +13,5 @@ int main(int ac, char **av){
     if (!new_grid)
     return 1;
     game_of_life(grid, new_grid, atoi(av[1]), atoi(av[2]), atoi(av[3]));
-    print_grid(new_grid, atoi(av[1]), atoi(av[2]));
+    print_grid(grid, atoi(av[1]), atoi(av[2]));
 }

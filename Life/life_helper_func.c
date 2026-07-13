@@ -6,6 +6,8 @@ int validInput(char **av){
     int y;
     while (av[i]){
         y = 0;
+        if (av[i][y] == '\0')
+            return 0;
         while (av[i][y]){
             if (av[i][y] < '0' || av[i][y] > '9'){
                 return 0;
@@ -74,8 +76,7 @@ void print_grid(char *grid, int width, int height){
     for (int i = 0; i < height; i++){
         for (int y = 0; y < width; y++){
             index = (i * width) + y;
-            if (index < (width * height))
-                putchar(grid[index]);
+            putchar(grid[index]);
         }
         putchar('\n');
     }
@@ -126,6 +127,8 @@ static int alive(char *g, int W, int H, int x, int y){
                 count++;
         }
     }
+    free(x_offs);
+    free(y_offs);
     if (count < 2 || count > 3)
         return 0;
     return 1;
@@ -146,9 +149,20 @@ static int dead(char *g, int W, int H, int x, int y){
                 count++;
         }
     }
+    free(x_offs);
+    free(y_offs);
     if (count != 3)
         return 0;
     return 1;
+}
+
+static void change_grid(char *grid, char *new_grid, int w){
+    for (int i = 0; i < w; i++){
+        grid[i] = new_grid[i];
+    }
+    for (int i = 0; i < w; i++){
+        new_grid[i] = ' ';
+    }
 }
 
 void game_of_life(char *grid, char *new_grid, int W, int H, int iter){
@@ -157,18 +171,17 @@ void game_of_life(char *grid, char *new_grid, int W, int H, int iter){
         for (int row = 0; row < H; row++){
             for (int col = 0; col < W; col++){
                 index = (row * W) + col;
-                if (index < (W * H)){
-                    if (grid[index] == 'O'){
-                        if (alive(grid, W, H, col, row))
-                            new_grid[index] = 'O';
-                    }
-                    else{
-                        if (dead(grid, W, H, col, row))
-                            new_grid[index] = 'O';
-                    }
+                if (grid[index] == 'O'){
+                    if (alive(grid, W, H, col, row))
+                        new_grid[index] = 'O';
+                }
+                else{
+                    if (dead(grid, W, H, col, row))
+                        new_grid[index] = 'O';
                 }
             }
         }
+        change_grid(grid, new_grid, (W * H));
     }
 }
 
